@@ -2,7 +2,9 @@ package forecast
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
+	"net/url"
 	"strconv"
 	"time"
 )
@@ -70,6 +72,21 @@ func (a *Assignment) Weekdays() int {
 func (api *API) Assignments() (Assignments, error) {
 	var container assignmentsContainer
 	err := api.do("assignments", &container)
+	if err != nil {
+		return nil, err
+	}
+	return container.Assignments, nil
+}
+
+// People returns all people being scheduled in Forecast
+func (api *API) AssignmentsWithParams(options map[string]string) (Assignments, error) {
+	params := url.Values{}
+	for key, value := range options {
+		params.Add(key, value)
+	}
+
+	var container assignmentsContainer
+	err := api.do(fmt.Sprintf("assignments?%s", params.Encode()), &container)
 	if err != nil {
 		return nil, err
 	}
