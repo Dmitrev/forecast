@@ -78,7 +78,7 @@ func (api *API) Assignments() (Assignments, error) {
 	return container.Assignments, nil
 }
 
-// People returns all people being scheduled in Forecast
+// AssignmentsWithParams returns all assignments for the Forecast account that are filtered using options
 func (api *API) AssignmentsWithParams(options map[string]string) (Assignments, error) {
 	params := url.Values{}
 	for key, value := range options {
